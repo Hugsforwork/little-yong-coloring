@@ -1,197 +1,34 @@
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
+:root { --ink:#514b45; --muted:#8b8379; --accent:#6f9b91; --line:#ded6c8; --panel:#fffdf7; --swatch-size:25px; }
+html,body { margin:0; width:100%; min-width:0; background:transparent; color:var(--ink); font-family:system-ui,-apple-system,"Noto Sans TC","Microsoft JhengHei",sans-serif; }
+body { padding:4px; overflow:auto; }
+.widget { width:100%; max-width:520px; margin:0 auto; padding:8px; display:flex; gap:8px; border:1px solid var(--line); border-radius:12px; background:var(--panel); overflow:hidden; }
 
-:root {
-  --page-bg: #f7f3e8;
-  --panel-bg: #fffdf7;
-  --ink: #514b45;
-  --muted: #8b8379;
-  --accent: #6f9b91;
-  --line: #ded6c8;
-  --swatch-size: 27px;
-}
+/* 玩具、信紙與筆：線稿在上，工具列在下 */
+.widget.layout-bottom { flex-direction:column; align-items:stretch; }
+.widget.layout-bottom .drawing-area { order:1; width:100%; display:flex; justify-content:center; align-items:center; }
+.widget.layout-bottom .controls { order:2; width:100%; }
 
-html, body {
-  margin: 0;
-  width: 100%;
-  min-width: 0;
-  background: transparent;
-  color: var(--ink);
-  font-family: system-ui, -apple-system, "Noto Sans TC", "Microsoft JhengHei", sans-serif;
-}
+/* 桌燈：工具列在左，線稿在右 */
+.widget.layout-side { flex-direction:row; align-items:center; gap:9px; }
+.widget.layout-side .controls { order:1; flex:0 0 36%; width:36%; min-width:0; padding:3px 0; }
+.widget.layout-side .drawing-area { order:2; flex:1 1 64%; min-width:0; display:flex; align-items:center; justify-content:center; }
 
-body {
-  padding: 5px;
-}
-
-.widget {
-  width: 100%;
-  max-width: 100%;
-  margin: 0 auto;
-  padding: 8px;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  background: var(--panel-bg);
-  overflow: hidden;
-}
-
-.drawing-area {
-  width: 100%;
-  overflow: hidden;
-  border-radius: 7px;
-  background: #fff;
-}
-
-.stage {
-  position: relative;
-  width: 100%;
-  line-height: 0;
-  overflow: hidden;
-  background: #fff;
-  touch-action: none;
-}
-
-#drawingCanvas,
-#lineArt {
-  position: absolute;
-  inset: 0;
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
-#drawingCanvas {
-  z-index: 1;
-  touch-action: none;
-  cursor: crosshair;
-}
-
-#lineArt {
-  z-index: 2;
-  object-fit: fill;
-  pointer-events: none;
-  user-select: none;
-  -webkit-user-drag: none;
-}
-
-.loading {
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-  display: grid;
-  place-items: center;
-  color: var(--muted);
-  font-size: 13px;
-  background: #fffdf7;
-  line-height: 1.4;
-}
-
-.loading.is-hidden {
-  display: none;
-}
-
-.controls {
-  padding: 9px 2px 1px;
-}
-
-.palette-heading {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 8px;
-  margin: 0 1px 7px;
-}
-
-.palette-title {
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: .04em;
-}
-
-.tool-name {
-  font-size: 11px;
-  color: var(--muted);
-}
-
-.palette {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 7px;
-  min-height: 30px;
-  padding: 2px 1px 8px;
-}
-
-.swatch {
-  width: var(--swatch-size);
-  height: var(--swatch-size);
-  flex: 0 0 var(--swatch-size);
-  padding: 0;
-  border: 2px solid rgba(70, 60, 50, .12);
-  border-radius: 6px;
-  cursor: pointer;
-  background: var(--swatch-color);
-  touch-action: manipulation;
-}
-
-.swatch[aria-pressed="true"] {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-
-.actions {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding-top: 6px;
-  border-top: 1px solid #eee8dd;
-}
-
-.action-button {
-  flex: 1 1 0;
-  min-width: 0;
-  min-height: 31px;
-  padding: 5px 4px;
-  border: 1px solid var(--line);
-  border-radius: 7px;
-  background: #fff;
-  color: var(--ink);
-  font: inherit;
-  font-size: 11px;
-  cursor: pointer;
-  touch-action: manipulation;
-}
-
-.action-button span {
-  margin-right: 2px;
-  font-size: 14px;
-  vertical-align: -1px;
-}
-
-.action-button[aria-pressed="true"] {
-  border-color: var(--accent);
-  background: #edf4f0;
-  color: #426d62;
-}
-
-.action-button:disabled {
-  opacity: .4;
-  cursor: default;
-}
-
-.hint {
-  margin: 6px 1px 0;
-  color: var(--muted);
-  font-size: 10px;
-  line-height: 1.35;
-}
-
-/* 窄版嵌入時，色票與按鈕會自動縮小 */
-@media (max-width: 260px) {
-  :root { --swatch-size: 22px; }
-  .widget { padding: 6px; }
-  .palette { gap: 5px; }
-  .action-button { font-size: 10px; }
-  .hint { display: none; }
-}
+.stage { position:relative; flex:0 0 auto; max-width:100%; overflow:hidden; background:#fff; border-radius:5px; line-height:0; touch-action:none; }
+#drawingCanvas,#lineArt { position:absolute; inset:0; display:block; width:100%; height:100%; }
+#drawingCanvas { z-index:1; touch-action:none; cursor:crosshair; }
+#lineArt { z-index:2; object-fit:fill; pointer-events:none; user-select:none; -webkit-user-drag:none; mix-blend-mode:multiply; }
+.loading { position:absolute; inset:0; z-index:3; display:grid; place-items:center; padding:8px; color:var(--muted); font-size:12px; line-height:1.4; text-align:center; background:#fffdf7; }
+.loading.is-hidden { display:none; }
+.palette-heading { display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:3px; margin:0 1px 6px; font-size:11px; }
+#toolName { font-size:10px; color:var(--muted); }
+.palette { display:flex; flex-wrap:wrap; align-items:center; gap:6px; min-height:32px; padding:7px; border:1px solid #e9e0d2; border-radius:7px; background:#f8f4eb; }
+.swatch { width:var(--swatch-size); height:var(--swatch-size); flex:0 0 var(--swatch-size); padding:0; border:1px solid rgba(70,60,50,.2); border-radius:5px; cursor:pointer; background:var(--swatch-color); touch-action:manipulation; }
+.swatch[aria-pressed="true"] { outline:2px solid var(--accent); outline-offset:2px; }
+.actions { display:flex; gap:4px; margin-top:7px; padding-top:6px; border-top:1px solid #eee8dd; }
+.action-button { flex:1 1 0; min-width:0; min-height:30px; padding:4px 2px; border:1px solid var(--line); border-radius:6px; background:#fff; color:var(--ink); font:inherit; font-size:10px; white-space:nowrap; cursor:pointer; touch-action:manipulation; }
+.action-button[aria-pressed="true"] { border-color:var(--accent); background:#edf4f0; color:#426d62; }
+.action-button:disabled { opacity:.4; cursor:default; }
+.hint { margin:5px 1px 0; color:var(--muted); font-size:9px; line-height:1.35; }
+@media(max-width:300px) { :root{--swatch-size:21px;} .widget{padding:5px;gap:6px;} .widget.layout-side{gap:6px;} .widget.layout-side .controls{flex-basis:39%;width:39%;} .palette{gap:4px;padding:5px;} .action-button{font-size:9px;} .hint{display:none;} }
+@media(max-width:190px) { .widget.layout-side{flex-direction:column;} .widget.layout-side .controls,.widget.layout-side .drawing-area{width:100%;flex-basis:auto;} .widget.layout-side .drawing-area{order:1;} .widget.layout-side .controls{order:2;} }
