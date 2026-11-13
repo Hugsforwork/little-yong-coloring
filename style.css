@@ -32,3 +32,130 @@ body { padding:4px; overflow:auto; }
 .hint { margin:5px 1px 0; color:var(--muted); font-size:9px; line-height:1.35; }
 @media(max-width:300px) { :root{--swatch-size:21px;} .widget{padding:5px;gap:6px;} .widget.layout-side{gap:6px;} .widget.layout-side .controls{flex-basis:39%;width:39%;} .palette{gap:4px;padding:5px;} .action-button{font-size:9px;} .hint{display:none;} }
 @media(max-width:190px) { .widget.layout-side{flex-direction:column;} .widget.layout-side .controls,.widget.layout-side .drawing-area{width:100%;flex-basis:auto;} .widget.layout-side .drawing-area{order:1;} .widget.layout-side .controls{order:2;} }
+
+/* ===== 著色工具版面優化 v4 ===== */
+
+/* 共通：六種色票 */
+.palette {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 5px;
+  padding: 6px;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.swatch {
+  width: 25px;
+  height: 25px;
+  flex: 0 0 25px;
+}
+
+/* 共通：按鈕 */
+.actions {
+  display: grid;
+  gap: 5px;
+  margin-top: 6px;
+  padding-top: 6px;
+}
+
+/* 確保按鈕不會被壓縮 */
+.action-button {
+  width: 100%;
+  min-width: 0;
+  min-height: 34px;
+  padding: 4px 2px;
+  font-size: 10px;
+  white-space: nowrap;
+  text-align: center;
+  overflow: hidden;
+}
+
+/* ===== 玩具、信紙與筆：工具列在下方 ===== */
+
+.layout-bottom .palette {
+  display: grid;
+  grid-template-columns: repeat(6, 25px);
+  justify-content: start;
+}
+
+.layout-bottom .actions {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+/* ===== 桌燈：工具列在左側 ===== */
+
+.layout-side .controls {
+  flex: 0 0 42%;
+  width: 42%;
+  min-width: 0;
+}
+
+.layout-side .palette {
+  display: grid;
+  grid-template-columns: repeat(2, 25px);
+  justify-content: start;
+  gap: 5px;
+}
+
+.layout-side .actions {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+/* 桌燈的第三個按鈕：移至下一排，佔滿整排 */
+.layout-side .actions .action-button:last-child {
+  grid-column: 1 / -1;
+}
+
+/* 桌燈按鈕文字稍微縮小，避免過窄時直排 */
+.layout-side .action-button {
+  font-size: 9px;
+  padding: 4px 1px;
+}
+
+/* 小尺寸螢幕 */
+@media (max-width: 300px) {
+  .widget {
+    padding: 5px;
+    gap: 5px;
+  }
+
+  .layout-bottom .palette {
+    gap: 4px;
+    padding: 5px;
+  }
+
+  .layout-bottom .swatch {
+    width: 23px;
+    height: 23px;
+    flex-basis: 23px;
+  }
+
+  .layout-side .controls {
+    flex-basis: 42%;
+    width: 42%;
+  }
+
+  .layout-side .palette {
+    gap: 4px;
+    padding: 5px;
+  }
+
+  .layout-side .swatch {
+    width: 22px;
+    height: 22px;
+    flex-basis: 22px;
+  }
+
+  .layout-side .action-button {
+    font-size: 9px;
+  }
+}
+
+/* 避免電子書內嵌頁面自己出現捲軸 */
+html,
+body {
+  overflow: hidden;
+}
