@@ -176,7 +176,10 @@ function initialize(){
   lineArt.onload=()=>{
     fitStage(); canvasReady=true;
     requestAnimationFrame(()=>{
-      resizeCanvas(false); loadDrawing();
+      resizeCanvas(false);
+ctx.clearRect(0, 0, canvas.width, canvas.height);
+undoStack = [];
+updateUndo();
       loading.classList.add("is-hidden"); updateUndo();
     });
   };
