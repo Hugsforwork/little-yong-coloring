@@ -6,9 +6,47 @@
  * 圖片放在 images 資料夾，檔名：toy.png、lamp.png、letter.png
  */
 const TOOL_CONFIG = {
-  toy: {name:"玩具", image:"images/toy.png", layout:"bottom", colors:["#E9A2A2","#F2C66D","#8BB7A4","#8DA9D1","#B59ACB","#E6A16F","#F2E4C9"]},
-  lamp: {name:"桌燈", image:"images/lamp.png", layout:"side", colors:["#B59ACB","#E8A7A0","#F4D58D","#A9C4D6","#91B6A2","#E8C5A2"]},
-  letter: {name:"信紙與筆", image:"images/letter.png", layout:"bottom", colors:["#E6A16F","#94B8A4","#A7A0CF","#E9C1B7","#EBCB79","#8DA9D1","#F2E4C9"]}
+  toy: {
+    name: "玩具",
+    image: "images/toy.png",
+    layout: "bottom",
+    colors: [
+      "#E9A2A2",
+      "#F2C66D",
+      "#8BB7A4",
+      "#8DA9D1",
+      "#B59ACB",
+      "#E6A16F"
+    ]
+  },
+
+  lamp: {
+    name: "桌燈",
+    image: "images/lamp.png",
+    layout: "side",
+    colors: [
+      "#B59ACB",
+      "#E8A7A0",
+      "#F4D58D",
+      "#A9C4D6",
+      "#91B6A2",
+      "#E8C5A2"
+    ]
+  },
+
+  letter: {
+    name: "信紙與筆",
+    image: "images/letter.png",
+    layout: "bottom",
+    colors: [
+      "#E6A16F",
+      "#94B8A4",
+      "#A7A0CF",
+      "#E9C1B7",
+      "#EBCB79",
+      "#8DA9D1"
+    ]
+  }
 };
 const params = new URLSearchParams(location.search);
 const toolId = params.get("tool") || "toy";
