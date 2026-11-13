@@ -159,3 +159,45 @@ html,
 body {
   overflow: hidden;
 }
+
+/* ===== 桌燈長條版面調整 ===== */
+
+/* 讓網頁跟著嵌入框的高度伸展 */
+html,
+body {
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  overflow: hidden;
+}
+
+/* 著色工具填滿可用高度 */
+.widget.layout-side {
+  width: 100%;
+  height: 100%;
+  min-height: 280px;
+  align-items: stretch;
+}
+
+/* 左側工具列維持原本比例，垂直置中 */
+.widget.layout-side .controls {
+  flex: 0 0 36%;
+  width: 36%;
+  align-self: center;
+}
+
+/* 右側線稿區域跟著嵌入框延伸 */
+.widget.layout-side .drawing-area {
+  flex: 1 1 64%;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 線稿保持比例，不會被拉伸 */
+.widget.layout-side .stage {
+  flex-shrink: 0;
+}
