@@ -87,13 +87,28 @@ function buildPalette(){
 }
 
 /* 保留圖片原始比例，並依容器空間限制最大寬、高。 */
+
 function fitStage(){
   if(!lineArt.naturalWidth || !lineArt.naturalHeight) return;
-  const areaWidth=Math.max(80,drawingArea.clientWidth-4);
-  const scale=Math.min(1,MAX_IMAGE_WIDTH/lineArt.naturalWidth,MAX_IMAGE_HEIGHT/lineArt.naturalHeight,areaWidth/lineArt.naturalWidth);
-  stage.style.width=Math.max(1,Math.round(lineArt.naturalWidth*scale))+"px";
-  stage.style.height=Math.max(1,Math.round(lineArt.naturalHeight*scale))+"px";
+
+  const areaWidth = Math.max(80, drawingArea.clientWidth - 8);
+  const areaHeight = Math.max(80, drawingArea.clientHeight - 8);
+
+  const scale = Math.min(
+    1,
+    MAX_IMAGE_WIDTH / lineArt.naturalWidth,
+    MAX_IMAGE_HEIGHT / lineArt.naturalHeight,
+    areaWidth / lineArt.naturalWidth,
+    areaHeight / lineArt.naturalHeight
+  );
+
+  stage.style.width =
+    Math.max(1, Math.round(lineArt.naturalWidth * scale)) + "px";
+
+  stage.style.height =
+    Math.max(1, Math.round(lineArt.naturalHeight * scale)) + "px";
 }
+
 
 function resizeCanvas(preserve=true){
   if(!canvasReady) return;
