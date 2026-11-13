@@ -112,19 +112,6 @@ function resizeCanvas(preserve=true){
     ctx.drawImage(old,0,0,old.width,old.height,0,0,rect.width,rect.height);
   }
 }
-function saveDrawing(){
-  try{localStorage.setItem(STORAGE_KEY,canvas.toDataURL("image/png"));}
-  catch(error){console.warn("無法儲存著色紀錄",error);}
-}
-function loadDrawing(){
-  try{
-    const saved=localStorage.getItem(STORAGE_KEY);
-    if(!saved)return;
-    const img=new Image();
-    img.onload=()=>{const r=stage.getBoundingClientRect();ctx.drawImage(img,0,0,r.width,r.height);};
-    img.src=saved;
-  }catch(error){console.warn("無法讀取著色紀錄",error);}
-}
 function updateUndo(){undoButton.disabled=undoStack.length===0;}
 function snapshot(){
   try{
