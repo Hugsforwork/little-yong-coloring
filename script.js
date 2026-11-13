@@ -148,7 +148,7 @@ function draw(e){
   if(!isDrawing)return;
   e.preventDefault(); const p=getPoint(e);
   ctx.globalCompositeOperation=eraserOn?"destination-out":"source-over";
-  ctx.strokeStyle=selectedColor; ctx.lineWidth=eraserOn?BRUSH_SIZE*3:BRUSH_SIZE;
+  ctx.strokeStyle=selectedColor; ctx.lineWidth=BRUSH_SIZE;
   ctx.lineCap="round"; ctx.lineJoin="round";
   ctx.beginPath(); ctx.moveTo(lastPoint.x,lastPoint.y); ctx.lineTo(p.x,p.y); ctx.stroke();
   lastPoint=p;
