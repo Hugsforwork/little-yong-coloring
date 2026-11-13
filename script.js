@@ -141,7 +141,7 @@ function startDrawing(e){
   try{canvas.setPointerCapture(e.pointerId);}catch(_){}
   ctx.globalCompositeOperation=eraserOn?"destination-out":"source-over";
   ctx.fillStyle=selectedColor; ctx.strokeStyle=selectedColor;
-  ctx.lineWidth=eraserOn?BRUSH_SIZE*3:BRUSH_SIZE;
+  ctx.lineWidth=BRUSH_SIZE;
   ctx.beginPath(); ctx.arc(lastPoint.x,lastPoint.y,ctx.lineWidth/2,0,Math.PI*2); ctx.fill();
 }
 function draw(e){
