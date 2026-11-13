@@ -145,7 +145,7 @@ function draw(e){
 function stopDrawing(e){
   if(!isDrawing)return;
   isDrawing=false; lastPoint=null; ctx.globalCompositeOperation="source-over";
-  saveDrawing(); updateUndo();
+  updateUndo();
   if(e && e.pointerId!==undefined){try{canvas.releasePointerCapture(e.pointerId);}catch(_){}}
 }
 canvas.addEventListener("pointerdown",startDrawing);
@@ -156,7 +156,7 @@ canvas.addEventListener("lostpointercapture",stopDrawing);
 
 undoButton.addEventListener("click",()=>{
   if(!undoStack.length)return;
-  ctx.putImageData(undoStack.pop(),0,0); saveDrawing(); updateUndo();
+  ctx.putImageData(undoStack.pop(),0,0); updateUndo();
 });
 eraserButton.addEventListener("click",()=>{
   eraserOn=!eraserOn;
@@ -168,7 +168,7 @@ clearButton.addEventListener("click",()=>{
   snapshot();
   const r=stage.getBoundingClientRect();
   ctx.clearRect(0,0,r.width,r.height);
-  saveDrawing(); updateUndo();
+  updateUndo();
 });
 
 function initialize(){
