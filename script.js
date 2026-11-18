@@ -10,6 +10,7 @@ const TOOL_CONFIG = {
     name: "玩具",
     image: "images/toy.png",
     layout: "bottom",
+    imageWidthRatio: 1,
     colors: [
       "#E9A2A2",
       "#F2C66D",
@@ -23,6 +24,7 @@ const TOOL_CONFIG = {
     name: "桌燈",
     image: "images/lamp.png",
     layout: "bottom",
+    imageWidthRatio: 0.76,
     colors: [
       "#B59ACB",
       "#E8A7A0",
@@ -36,6 +38,7 @@ const TOOL_CONFIG = {
     name: "信紙與筆",
     image: "images/letter.png",
     layout: "bottom",
+    imageWidthRatio: 1,
     colors: [
       "#E6A16F",
       "#94B8A4",
