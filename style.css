@@ -14,7 +14,7 @@ body { padding:4px; overflow:auto; }
 .widget.layout-side .controls { order:1; flex:0 0 36%; width:36%; min-width:0; padding:3px 0; }
 .widget.layout-side .drawing-area { order:2; flex:1 1 64%; min-width:0; display:flex; align-items:center; justify-content:center; }
 
-.stage { position:relative; flex:0 0 auto; max-width:100%; overflow:hidden; background:#fff; border-radius:5px; line-height:0; touch-action:none; }
+.stage { position:relative; flex:0 0 auto; max-width:100%; overflow:hidden; background:#F4EADC; border-radius:5px; line-height:0; touch-action:none; }
 #drawingCanvas,#lineArt { position:absolute; inset:0; display:block; width:100%; height:100%; }
 #drawingCanvas { z-index:1; touch-action:none; cursor:crosshair; }
 #lineArt { z-index:2; object-fit:fill; pointer-events:none; user-select:none; -webkit-user-drag:none; mix-blend-mode:multiply; }
