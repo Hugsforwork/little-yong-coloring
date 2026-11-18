@@ -200,63 +200,6 @@ body {
   opacity: .4;
   cursor: default;
 }
-
-
-/* 原本的實心符號風格 */
-.tool-icon {
-  position: relative;
-  display: block;
-  flex: 0 0 auto;
-}
-
-/* 畫筆：灰色圓形 */
-.icon-undo {
-  width: 29px;
-  height: 29px;
-  border-radius: 50%;
-  background: #999895;
-}
-
-/* 橡皮擦：黑色斜方塊 */
-.icon-eraser {
-  width: 25px;
-  height: 20px;
-  border-radius: 3px;
-  background: #050505;
-  transform: rotate(-45deg);
-}
-
-/* 垃圾桶 */
-.icon-clear {
-  width: 22px;
-  height: 25px;
-  margin-top: 3px;
-  border-radius: 1px 1px 3px 3px;
-  background: #050505;
-  clip-path: polygon(8% 12%, 92% 12%, 85% 100%, 15% 100%);
-}
-
-.icon-clear::before {
-  content: "";
-  position: absolute;
-  top: -4px;
-  left: -2px;
-  width: 26px;
-  height: 4px;
-  border-radius: 1px;
-  background: #050505;
-}
-
-.icon-clear::after {
-  content: "";
-  position: absolute;
-  top: -7px;
-  left: 7px;
-  width: 8px;
-  height: 3px;
-  background: #050505;
-}
-
 /* 提示文字 */
 .hint {
   margin: 4px 1px 0;
