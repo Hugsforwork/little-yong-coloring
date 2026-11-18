@@ -1,302 +1,147 @@
-* { box-sizing: border-box; }
-:root { --ink:#514b45; --muted:#8b8379; --accent:#6f9b91; --line:#ded6c8; --panel:#fffdf7; --swatch-size:25px; }
-html,body { margin:0; width:100%; min-width:0; background:transparent; color:var(--ink); font-family:system-ui,-apple-system,"Noto Sans TC","Microsoft JhengHei",sans-serif; }
-body { padding:4px; overflow:auto; }
-.widget { width:100%; max-width:520px; margin:0 auto; padding:8px; display:flex; gap:8px; border:1px solid var(--line); border-radius:12px; background:var(--panel); overflow:hidden; }
 
-/* 玩具、信紙與筆：線稿在上，工具列在下 */
-.widget.layout-bottom { flex-direction:column; align-items:stretch; }
-.widget.layout-bottom .drawing-area { order:1; width:100%; display:flex; justify-content:center; align-items:center; }
-.widget.layout-bottom .controls { order:2; width:100%; }
-
-/* 桌燈：工具列在左，線稿在右 */
-.widget.layout-side { flex-direction:row; align-items:center; gap:9px; }
-.widget.layout-side .controls { order:1; flex:0 0 36%; width:36%; min-width:0; padding:3px 0; }
-.widget.layout-side .drawing-area { order:2; flex:1 1 64%; min-width:0; display:flex; align-items:center; justify-content:center; }
-
-.stage { position:relative; flex:0 0 auto; max-width:100%; overflow:hidden; background:#F4EADC; border-radius:5px; line-height:0; touch-action:none; }
-#drawingCanvas,#lineArt { position:absolute; inset:0; display:block; width:100%; height:100%; }
-#drawingCanvas { z-index:1; touch-action:none; cursor:crosshair; }
-#lineArt { z-index:2; object-fit:fill; pointer-events:none; user-select:none; -webkit-user-drag:none; mix-blend-mode:multiply; }
-.loading { position:absolute; inset:0; z-index:3; display:grid; place-items:center; padding:8px; color:var(--muted); font-size:12px; line-height:1.4; text-align:center; background:#fffdf7; }
-.loading.is-hidden { display:none; }
-.palette-heading { display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:3px; margin:0 1px 6px; font-size:11px; }
-#toolName { font-size:10px; color:var(--muted); }
-.palette { display:flex; flex-wrap:wrap; align-items:center; gap:6px; min-height:32px; padding:7px; border:1px solid #e9e0d2; border-radius:7px; background:#f8f4eb; }
-.swatch { width:var(--swatch-size); height:var(--swatch-size); flex:0 0 var(--swatch-size); padding:0; border:1px solid rgba(70,60,50,.2); border-radius:5px; cursor:pointer; background:var(--swatch-color); touch-action:manipulation; }
-.swatch[aria-pressed="true"] { outline:2px solid var(--accent); outline-offset:2px; }
-.actions { display:flex; gap:4px; margin-top:7px; padding-top:6px; border-top:1px solid #eee8dd; }
-.action-button { flex:1 1 0; min-width:0; min-height:30px; padding:4px 2px; border:1px solid var(--line); border-radius:6px; background:#F4EADC; color:var(--ink); font:inherit; font-size:10px; white-space:nowrap; cursor:pointer; touch-action:manipulation; }
-.action-button[aria-pressed="true"] { border-color:var(--accent); background:#edf4f0; color:#426d62; }
-.action-button:disabled { opacity:.4; cursor:default; }
-.hint { margin:5px 1px 0; color:var(--muted); font-size:9px; line-height:1.35; }
-@media(max-width:300px) { :root{--swatch-size:21px;} .widget{padding:5px;gap:6px;} .widget.layout-side{gap:6px;} .widget.layout-side .controls{flex-basis:39%;width:39%;} .palette{gap:4px;padding:5px;} .action-button{font-size:9px;} .hint{display:none;} }
-@media(max-width:190px) { .widget.layout-side{flex-direction:column;} .widget.layout-side .controls,.widget.layout-side .drawing-area{width:100%;flex-basis:auto;} .widget.layout-side .drawing-area{order:1;} .widget.layout-side .controls{order:2;} }
-
-/* ===== 著色工具版面優化 v4 ===== */
-
-/* 共通：六種色票 */
-.palette {
-  display: flex;
-  flex-wrap: nowrap;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 5px;
-  padding: 6px;
-  min-width: 0;
-  overflow: hidden;
+* {
+  box-sizing: border-box;
 }
 
-.swatch {
-  width: 25px;
-  height: 25px;
-  flex: 0 0 25px;
+:root {
+  --ink: #514b45;
+  --muted: #8b8379;
+  --accent: #6f9b91;
+  --line: #ded6c8;
+  --panel: #fffdf7;
+  --swatch-size: 25px;
 }
-
-/* 共通：按鈕 */
-.actions {
-  display: grid;
-  gap: 5px;
-  margin-top: 6px;
-  padding-top: 6px;
-}
-
-/* 確保按鈕不會被壓縮 */
-.action-button {
-  width: 100%;
-  min-width: 0;
-  min-height: 34px;
-  padding: 4px 2px;
-  font-size: 10px;
-  white-space: nowrap;
-  text-align: center;
-  overflow: hidden;
-}
-
-/* ===== 玩具、信紙與筆：工具列在下方 ===== */
-
-.layout-bottom .palette {
-  display: grid;
-  grid-template-columns: repeat(6, 25px);
-  justify-content: start;
-}
-
-.layout-bottom .actions {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
-/* ===== 桌燈：工具列在左側 ===== */
-
-.layout-side .controls {
-  flex: 0 0 42%;
-  width: 42%;
-  min-width: 0;
-}
-
-.layout-side .palette {
-  display: grid;
-  grid-template-columns: repeat(2, 25px);
-  justify-content: start;
-  gap: 5px;
-}
-
-.layout-side .actions {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-/* 桌燈的第三個按鈕：移至下一排，佔滿整排 */
-.layout-side .actions .action-button:last-child {
-  grid-column: 1 / -1;
-}
-
-/* 桌燈按鈕文字稍微縮小，避免過窄時直排 */
-.layout-side .action-button {
-  font-size: 9px;
-  padding: 4px 1px;
-}
-
-/* 小尺寸螢幕 */
-@media (max-width: 300px) {
-  .widget {
-    padding: 5px;
-    gap: 5px;
-  }
-
-  .layout-bottom .palette {
-    gap: 4px;
-    padding: 5px;
-  }
-
-  .layout-bottom .swatch {
-    width: 23px;
-    height: 23px;
-    flex-basis: 23px;
-  }
-
-  .layout-side .controls {
-    flex-basis: 42%;
-    width: 42%;
-  }
-
-  .layout-side .palette {
-    gap: 4px;
-    padding: 5px;
-  }
-
-  .layout-side .swatch {
-    width: 22px;
-    height: 22px;
-    flex-basis: 22px;
-  }
-
-  .layout-side .action-button {
-    font-size: 9px;
-  }
-}
-
-/* 避免電子書內嵌頁面自己出現捲軸 */
-html,
-body {
-  overflow: hidden;
-}
-
-/* ===== 桌燈長條版面調整 ===== */
-
-/* 讓網頁跟著嵌入框的高度伸展 */
-html,
-body {
-  width: 100%;
-  height: 100%;
-  min-height: 100%;
-  overflow: hidden;
-}
-
-/* 著色工具填滿可用高度 */
-.widget.layout-side {
-  width: 100%;
-  height: 100%;
-  min-height: 280px;
-  align-items: stretch;
-}
-
-/* 左側工具列維持原本比例，垂直置中 */
-.widget.layout-side .controls {
-  flex: 0 0 36%;
-  width: 36%;
-  align-self: center;
-}
-
-/* 右側線稿區域跟著嵌入框延伸 */
-.widget.layout-side .drawing-area {
-  flex: 1 1 64%;
-  min-width: 0;
-  min-height: 0;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* 線稿保持比例，不會被拉伸 */
-.widget.layout-side .stage {
-  flex-shrink: 0;
-}
-
-/* ===== 小永報著色工具 v5 ===== */
 
 html,
 body {
   width: 100%;
-  min-height: 100%;
+  min-width: 0;
   margin: 0;
   background: #F4EADC;
-  color: #514B45;
-  font-family: system-ui, "Noto Sans TC",
+  color: var(--ink);
+  font-family: system-ui, -apple-system, "Noto Sans TC",
     "Microsoft JhengHei", sans-serif;
 }
 
-/* 網頁獨立開啟時，工具置中 */
 body {
-  padding: 10px;
-  overflow-x: hidden;
-  overflow-y: auto;
+  padding: 4px;
+  overflow: hidden;
 }
 
 .widget {
   width: 100%;
-  max-width: 360px;
+  max-width: 520px;
   margin: 0 auto;
-  padding: 9px;
+  padding: 8px;
   display: flex;
   flex-direction: column;
-  gap: 7px;
-  background: #F4EADC;
-  border: 1px solid #E2D5C1;
-  border-radius: 12px;
-}
-
-/* 三個工具統一上下排列 */
-.widget.layout-bottom {
-  flex-direction: column;
   align-items: stretch;
+  gap: 7px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--panel);
+  overflow: hidden;
 }
 
-.widget.layout-bottom .drawing-area {
+/* 線稿區：一律在上方 */
+.drawing-area {
   order: 1;
   width: 100%;
+  min-width: 0;
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
 }
 
-.widget.layout-bottom .controls {
+/* 控制區：一律在下方 */
+.controls {
   order: 2;
   width: 100%;
   min-width: 0;
 }
 
-/* 畫布 */
+/* 著色畫布 */
 .stage {
+  position: relative;
+  flex: 0 0 auto;
   max-width: 100%;
-  background: #F4EADC;
-  border-radius: 6px;
   overflow: hidden;
+  background: #F4EADC;
+  border-radius: 5px;
+  line-height: 0;
+  touch-action: none;
 }
 
 #drawingCanvas,
 #lineArt {
   position: absolute;
   inset: 0;
+  display: block;
   width: 100%;
   height: 100%;
 }
 
+#drawingCanvas {
+  z-index: 1;
+  touch-action: none;
+  cursor: crosshair;
+}
+
 #lineArt {
+  z-index: 2;
   object-fit: fill;
-  mix-blend-mode: multiply;
   pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  mix-blend-mode: multiply;
+}
+
+.loading {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  padding: 8px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.4;
+  text-align: center;
+  background: #fffdf7;
+}
+
+.loading.is-hidden {
+  display: none;
 }
 
 /* 色票標題 */
 .palette-heading {
   display: flex;
+  align-items: baseline;
   justify-content: space-between;
-  align-items: center;
-  margin: 2px 1px 5px;
+  gap: 3px;
+  margin: 0 1px 5px;
   font-size: 11px;
+}
+
+#toolName {
+  color: var(--muted);
+  font-size: 10px;
 }
 
 /* 五色一列 */
 .palette {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
+  align-items: center;
   gap: 6px;
-  padding: 5px;
-  height: 36px;
+  min-width: 0;
   min-height: 36px;
-  background: #FFFDF8;
-  border: 1px solid #E5D9C7;
+  padding: 5px;
+  border: 1px solid #e5d9c7;
   border-radius: 7px;
+  background: #fffdf8;
   overflow: hidden;
 }
 
@@ -304,62 +149,117 @@ body {
   width: 100%;
   height: 24px;
   min-width: 0;
+  padding: 0;
+  border: 1px solid rgba(70, 60, 50, .2);
   border-radius: 5px;
+  background: var(--swatch-color);
+  cursor: pointer;
+  touch-action: manipulation;
 }
 
-/* 功能按鈕一列 */
+.swatch[aria-pressed="true"] {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* 三個功能按鈕 */
 .actions {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 6px;
   margin-top: 5px;
-  padding-top: 0;
-  border-top: none;
 }
 
 .action-button {
   width: 100%;
-  height: 36px;
-  min-height: 36px;
-  padding: 5px;
+  height: 48px;
+  min-width: 0;
+  padding: 4px;
   display: flex;
-  justify-content: center;
   align-items: center;
-  border: 1px solid #E2D5C1;
+  justify-content: center;
+  border: 1px solid #e2d5c1;
   border-radius: 7px;
-  background: #FFFDF8;
-  color: #655A4D;
+  background: #f4eadc;
+  color: #111;
   cursor: pointer;
-}
-
-.action-button svg {
-  width: 17px;
-  height: 17px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.8;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+  touch-action: manipulation;
 }
 
 .action-button[aria-pressed="true"] {
-  background: #E5EFE9;
-  border-color: #8BB7A4;
+  border-color: var(--accent);
+  background: #edf4f0;
 }
 
 .action-button:disabled {
-  opacity: 0.4;
+  opacity: .4;
   cursor: default;
 }
 
-/* 縮小提示文字 */
-.hint {
-  margin: 4px 1px 0;
-  font-size: 9px;
-  color: #8B8379;
+/* 原本的實心符號風格 */
+.tool-icon {
+  position: relative;
+  display: block;
+  flex: 0 0 auto;
 }
 
-/* 小型裝置 */
+/* 畫筆：灰色圓形 */
+.icon-undo {
+  width: 29px;
+  height: 29px;
+  border-radius: 50%;
+  background: #999895;
+}
+
+/* 橡皮擦：黑色斜方塊 */
+.icon-eraser {
+  width: 25px;
+  height: 20px;
+  border-radius: 3px;
+  background: #050505;
+  transform: rotate(-45deg);
+}
+
+/* 垃圾桶 */
+.icon-clear {
+  width: 22px;
+  height: 25px;
+  margin-top: 3px;
+  border-radius: 1px 1px 3px 3px;
+  background: #050505;
+  clip-path: polygon(8% 12%, 92% 12%, 85% 100%, 15% 100%);
+}
+
+.icon-clear::before {
+  content: "";
+  position: absolute;
+  top: -4px;
+  left: -2px;
+  width: 26px;
+  height: 4px;
+  border-radius: 1px;
+  background: #050505;
+}
+
+.icon-clear::after {
+  content: "";
+  position: absolute;
+  top: -7px;
+  left: 7px;
+  width: 8px;
+  height: 3px;
+  background: #050505;
+}
+
+/* 提示文字 */
+.hint {
+  margin: 4px 1px 0;
+  color: var(--muted);
+  font-size: 9px;
+  line-height: 1.35;
+}
+
+/* 窄版面 */
 @media (max-width: 300px) {
   .widget {
     padding: 6px;
@@ -371,12 +271,15 @@ body {
     padding: 4px;
   }
 
+  .swatch {
+    height: 22px;
+  }
+
   .actions {
     gap: 4px;
   }
 
   .action-button {
-    height: 32px;
-    min-height: 32px;
+    height: 44px;
   }
 }
