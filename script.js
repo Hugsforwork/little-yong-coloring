@@ -177,8 +177,6 @@ clearButton.addEventListener("click",()=>{
   ctx.clearRect(0,0,r.width,r.height);
   updateUndo();
 });
-
-
 function initialize() {
   buildPalette();
 
@@ -220,7 +218,6 @@ function initialize() {
         resizeCanvas(true);
       }
     });
-
     observer.observe(drawingArea);
   } else {
     window.addEventListener("resize", () => {
