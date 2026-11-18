@@ -66,7 +66,7 @@ let undoStack=[], canvasReady=false;
 const STORAGE_KEY="little-yong-coloring-v3-"+toolId;
 // 每次開啟著色工具，都清除前一次留下的紀錄
 localStorage.removeItem(STORAGE_KEY);
-const MAX_UNDO_STEPS=20, BRUSH_SIZE=6, MAX_IMAGE_WIDTH=300, MAX_IMAGE_HEIGHT=200;
+const MAX_UNDO_STEPS = 20, BRUSH_SIZE = 6;
 
 function buildPalette(){
   config.colors.forEach((color,index)=>{
