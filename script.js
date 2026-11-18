@@ -59,7 +59,6 @@ const undoButton=document.getElementById("undoButton"), eraserButton=document.ge
 const clearButton=document.getElementById("clearButton"), hint=document.getElementById("hint");
 widget.classList.add("layout-"+config.layout);
 toolName.textContent=config.name;
-lineArt.src=config.image;
 
 let selectedColor=config.colors[0], eraserOn=false, isDrawing=false, lastPoint=null;
 let undoStack=[], canvasReady=false;
@@ -179,32 +178,56 @@ clearButton.addEventListener("click",()=>{
   updateUndo();
 });
 
-function initialize(){
-  buildPalette();
-  lineArt.onload=()=>{
-    fitStage(); canvasReady=true;
-    requestAnimationFrame(()=>{
-      resizeCanvas(false);
-ctx.clearRect(0, 0, canvas.width, canvas.height);
-undoStack = [];
-updateUndo();
-      loading.classList.add("is-hidden"); updateUndo();
-    });
-  };
-  lineArt.onerror=()=>{
-    loading.textContent="找不到圖片："+config.image+"。請確認 images 資料夾中的檔名及大小寫。";
-  };
-  if(lineArt.complete && lineArt.naturalWidth)lineArt.onload();
 
-  if("ResizeObserver" in window){
-    const observer=new ResizeObserver(()=>{
-      if(!lineArt.naturalWidth)return;
-      fitStage();
-      if(canvasReady)resizeCanvas(true);
+function initialize() {
+  buildPalette();
+
+  // 先設定載入完成與失敗時的處理方式
+  lineArt.onload = () => {
+    fitStage();
+
+    requestAnimationFrame(() => {
+      if (!stage.clientWidth || !stage.clientHeight) {
+        fitStage();
+      }
+
+      canvasReady = true;
+      resizeCanvas(false);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      undoStack = [];
+      updateUndo();
+      loading.classList.add("is-hidden");
     });
+  };
+
+  lineArt.onerror = () => {
+    loading.textContent =
+      "找不到圖片：" + config.image +
+      "。請確認 images 資料夾中的檔名及大小寫。";
+  };
+
+  // 確認載入事件已設定後，再指定圖片來源
+  lineArt.src = config.image;
+
+  if ("ResizeObserver" in window) {
+    const observer = new ResizeObserver(() => {
+      if (!lineArt.naturalWidth) return;
+
+      fitStage();
+
+      if (canvasReady) {
+        resizeCanvas(true);
+      }
+    });
+
     observer.observe(drawingArea);
-  }else{
-    window.addEventListener("resize",()=>{fitStage();if(canvasReady)resizeCanvas(true);});
+  } else {
+    window.addEventListener("resize", () => {
+      fitStage();
+      if (canvasReady) resizeCanvas(true);
+    });
   }
 }
+
 initialize();
