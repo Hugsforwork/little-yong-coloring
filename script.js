@@ -15,22 +15,20 @@ const TOOL_CONFIG = {
       "#F2C66D",
       "#8BB7A4",
       "#8DA9D1",
-      "#B59ACB",
-      "#E6A16F"
+      "#B59ACB"
     ]
   },
 
   lamp: {
     name: "桌燈",
     image: "images/lamp.png",
-    layout: "side",
+    layout: "bottom",
     colors: [
       "#B59ACB",
       "#E8A7A0",
       "#F4D58D",
       "#A9C4D6",
-      "#91B6A2",
-      "#E8C5A2"
+      "#91B6A2"
     ]
   },
 
@@ -43,8 +41,7 @@ const TOOL_CONFIG = {
       "#94B8A4",
       "#A7A0CF",
       "#E9C1B7",
-      "#EBCB79",
-      "#8DA9D1"
+      "#EBCB79"
     ]
   }
 };
