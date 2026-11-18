@@ -201,3 +201,182 @@ body {
 .widget.layout-side .stage {
   flex-shrink: 0;
 }
+
+/* ===== 小永報著色工具 v5 ===== */
+
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+  background: #F4EADC;
+  color: #514B45;
+  font-family: system-ui, "Noto Sans TC",
+    "Microsoft JhengHei", sans-serif;
+}
+
+/* 網頁獨立開啟時，工具置中 */
+body {
+  padding: 10px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.widget {
+  width: 100%;
+  max-width: 360px;
+  margin: 0 auto;
+  padding: 9px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  background: #F4EADC;
+  border: 1px solid #E2D5C1;
+  border-radius: 12px;
+}
+
+/* 三個工具統一上下排列 */
+.widget.layout-bottom {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.widget.layout-bottom .drawing-area {
+  order: 1;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.widget.layout-bottom .controls {
+  order: 2;
+  width: 100%;
+  min-width: 0;
+}
+
+/* 畫布 */
+.stage {
+  max-width: 100%;
+  background: #F4EADC;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+#drawingCanvas,
+#lineArt {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+#lineArt {
+  object-fit: fill;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+/* 色票標題 */
+.palette-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 2px 1px 5px;
+  font-size: 11px;
+}
+
+/* 五色一列 */
+.palette {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 6px;
+  padding: 5px;
+  height: 36px;
+  min-height: 36px;
+  background: #FFFDF8;
+  border: 1px solid #E5D9C7;
+  border-radius: 7px;
+  overflow: hidden;
+}
+
+.swatch {
+  width: 100%;
+  height: 24px;
+  min-width: 0;
+  border-radius: 5px;
+}
+
+/* 功能按鈕一列 */
+.actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  margin-top: 5px;
+  padding-top: 0;
+  border-top: none;
+}
+
+.action-button {
+  width: 100%;
+  height: 36px;
+  min-height: 36px;
+  padding: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #E2D5C1;
+  border-radius: 7px;
+  background: #FFFDF8;
+  color: #655A4D;
+  cursor: pointer;
+}
+
+.action-button svg {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.action-button[aria-pressed="true"] {
+  background: #E5EFE9;
+  border-color: #8BB7A4;
+}
+
+.action-button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+/* 縮小提示文字 */
+.hint {
+  margin: 4px 1px 0;
+  font-size: 9px;
+  color: #8B8379;
+}
+
+/* 小型裝置 */
+@media (max-width: 300px) {
+  .widget {
+    padding: 6px;
+    gap: 5px;
+  }
+
+  .palette {
+    gap: 4px;
+    padding: 4px;
+  }
+
+  .actions {
+    gap: 4px;
+  }
+
+  .action-button {
+    height: 32px;
+    min-height: 32px;
+  }
+}
