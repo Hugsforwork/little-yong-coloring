@@ -88,25 +88,18 @@ function buildPalette(){
 
 /* 保留圖片原始比例，並依容器空間限制最大寬、高。 */
 
-function fitStage(){
-  if(!lineArt.naturalWidth || !lineArt.naturalHeight) return;
 
-  const areaWidth = Math.max(80, drawingArea.clientWidth - 8);
-  const areaHeight = Math.max(80, drawingArea.clientHeight - 8);
+function fitStage() {
+  if (!lineArt.naturalWidth || !lineArt.naturalHeight) return;
 
-  const scale = Math.min(
-    1,
-    MAX_IMAGE_WIDTH / lineArt.naturalWidth,
-    MAX_IMAGE_HEIGHT / lineArt.naturalHeight,
-    areaWidth / lineArt.naturalWidth,
-    areaHeight / lineArt.naturalHeight
-  );
+  const availableWidth = Math.max(1, drawingArea.clientWidth - 8);
+  const targetWidth = availableWidth * (config.imageWidthRatio || 1);
 
-  stage.style.width =
-    Math.max(1, Math.round(lineArt.naturalWidth * scale)) + "px";
+  // 依圖片原始比例計算高度，不拉伸圖片
+  const scale = targetWidth / lineArt.naturalWidth;
 
-  stage.style.height =
-    Math.max(1, Math.round(lineArt.naturalHeight * scale)) + "px";
+  stage.style.width = Math.round(lineArt.naturalWidth * scale) + "px";
+  stage.style.height = Math.round(lineArt.naturalHeight * scale) + "px";
 }
 
 
