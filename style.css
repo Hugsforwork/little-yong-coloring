@@ -25,7 +25,8 @@ body {
 
 body {
   padding: 4px;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .widget {
