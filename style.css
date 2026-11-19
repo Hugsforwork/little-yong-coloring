@@ -232,14 +232,6 @@ body {
     height: 32px;
   }
 }
-/* 電子書窄版面：縮小功能按鈕 */
-@media (max-width: 400px) {
-  .action-button {
-    height: 28px !important;
-    min-height: 28px !important;
-    padding: 0 !important;
-  }
-}
 /* 電子書嵌入：避免工具本身產生內部捲動 */
 html,
 body {
