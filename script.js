@@ -47,6 +47,7 @@ const TOOL_CONFIG = {
       "#EBCB79"
     ]
   },
+  
   cat: {
     name: "貓",
     image: "images/cat.png",
