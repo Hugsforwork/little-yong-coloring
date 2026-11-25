@@ -47,7 +47,7 @@ const TOOL_CONFIG = {
       "#EBCB79"
     ]
   },
-  toy: {
+  cat: {
     name: "貓",
     image: "images/cat.png",
     layout: "bottom",
