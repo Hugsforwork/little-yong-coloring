@@ -46,6 +46,19 @@ const TOOL_CONFIG = {
       "#E9C1B7",
       "#EBCB79"
     ]
+  },
+  toy: {
+    name: "貓",
+    image: "images/cat.png",
+    layout: "bottom",
+    imageWidthRatio: 1,
+    colors: [
+      "#E9A2A2",
+      "#F2C66D",
+      "#8BB7A4",
+      "#8DA9D1",
+      "#B59ACB"
+    ]
   }
 };
 const params = new URLSearchParams(location.search);
